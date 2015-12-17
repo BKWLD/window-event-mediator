@@ -2,6 +2,7 @@
 Mediator pattern for window event listeners
 
 Example Usage:
+	mediator = require 'window-event-mediator'
 	mediator.add 'resize', myCallback
 	mediator.remove 'scroll', mycallback
 ###
