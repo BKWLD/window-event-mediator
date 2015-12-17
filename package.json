@@ -1,0 +1,22 @@
+{
+	"name": "window-event-mediator",
+	"version": "0.0.1",
+	"description": "Mediator pattern for window event handling",
+	"main": "index.coffee",
+	"scripts": {
+		"test": "echo \"Error: no test specified\" && exit 1"
+	},
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/BKWLD/window-event-mediator.git"
+	},
+	"author": "info@bkwld.com",
+	"license": "MIT",
+	"bugs": {
+		"url": "https://github.com/BKWLD/window-event-mediator/issues"
+	},
+	"homepage": "https://github.com/BKWLD/window-event-mediator#readme",
+	"devDependencies": {
+		"lodash": "^3.10.1"
+	}
+}
