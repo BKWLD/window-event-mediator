@@ -16,7 +16,7 @@
 		"url": "https://github.com/BKWLD/window-event-mediator/issues"
 	},
 	"homepage": "https://github.com/BKWLD/window-event-mediator#readme",
-	"devDependencies": {
+	"dependencies": {
 		"lodash": "^3"
 	}
 }
