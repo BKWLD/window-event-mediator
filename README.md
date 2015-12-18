@@ -5,6 +5,6 @@ Example Usage:
 
 ```
 mediator = require 'window-event-mediator'
-mediator.add 'resize', myCallback, { throttle: 40 }
-mediator.remove 'scroll', myCallback
+mediator.on 'resize', myCallback, { throttle: 40 }
+mediator.off 'scroll', myCallback
 ```

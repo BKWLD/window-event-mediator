@@ -3,8 +3,8 @@ Mediator pattern for window event listeners
 
 Example Usage:
 	mediator = require 'window-event-mediator'
-	mediator.add 'resize', myCallback
-	mediator.remove 'scroll', mycallback
+	mediator.on 'resize', myCallback
+	mediator.off 'scroll', mycallback
 ###
 _ = require 'lodash'
 
@@ -29,7 +29,7 @@ class WindowEventMediator
 		throttle [100] - int - milliseconds to throttle
 		debounce [100] - int - milliseconds to debounce
 	###
-	add: (event, callback, options) =>
+	on: (event, callback, options) =>
 		options = _.merge {}, @defaults, options
 		@set event, callback, options
 
@@ -40,7 +40,7 @@ class WindowEventMediator
 	event - string - event name ('resize', 'scroll', etc)
 	callback - function
 	###
-	remove: (event, callback) =>
+	off: (event, callback) =>
 		for type, bag of @handlers
 			for index, cb of bag.callbacks
 				bag.callbacks.splice index, 1 if callback == cb and event == type
