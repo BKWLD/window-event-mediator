@@ -73,7 +73,6 @@ class WindowEventMediator
 	e - Event - native event object
 	###
 	fire: (e) =>
-		events = @handlers[e.type]
-		event(e) for event in events.callbacks
+		_.eachRight @handlers[e.type].callbacks, (cb) -> cb(e); true
 
 module.exports = new WindowEventMediator()
