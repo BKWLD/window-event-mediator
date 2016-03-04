@@ -23,8 +23,7 @@ class WindowEventMediator
 	###
 	Register an event handler with the mediator
 
-	event - string - event name ('resize', 'scroll', etc)
-	callback - function
+	event - string - event name ('resize', 'scroll', etc) callback - function
 	options
 		throttle [100] - int - milliseconds to throttle
 		debounce [100] - int - milliseconds to debounce
@@ -34,8 +33,8 @@ class WindowEventMediator
 		@set event, callback, options
 
 	###
-	Removes any reference to the event type and callback, regardless of
-	Throttle or Debounce options.
+	Removes any reference to the event type and callback, regardless of Throttle
+	or Debounce options.
 
 	event - string - event name ('resize', 'scroll', etc)
 	callback - function
@@ -52,8 +51,9 @@ class WindowEventMediator
 	set: (event, callback, options) =>
 		key = options.throttle+'-'+options.debounce
 
-		# If the event type hasn't been added, create an object to store the callbacks
-		# and a record of which throttle.debounce listeners have been added
+		# If the event type hasn't been added, create an object to store the
+		# callbacks and a record of which throttle.debounce listeners have been
+		# added
 		if !@handlers[event]?
 			@handlers[event] = {callbacks: [], keys: {}}
 
@@ -67,12 +67,15 @@ class WindowEventMediator
 		@handlers[event].callbacks.push callback
 
 	###
-	Fires all events for a given window event type,
-	padding the native event object through to the mediated callback
+	Fires all events for a given window event type, padding the native event
+	object through to the mediated callback. It must be looped through backwards
+	so that callbacks which are removed during the loop don't break the
+	iteration. 
 
 	e - Event - native event object
 	###
 	fire: (e) =>
 		_.eachRight @handlers[e.type].callbacks, (cb) -> cb(e); true
 
+# This operates as a singleton
 module.exports = new WindowEventMediator()
