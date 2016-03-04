@@ -41,9 +41,7 @@ class WindowEventMediator
 	callback - function
 	###
 	off: (event, callback) =>
-		for type, bag of @handlers
-			for index, cb of bag.callbacks
-				bag.callbacks.splice index, 1 if callback == cb and event == type
+		_.pull @handlers[event].callbacks, callback
 
 	###
 	Create an event container for the window event type and
