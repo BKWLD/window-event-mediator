@@ -59,7 +59,7 @@ class WindowEventMediator
 
 		# Only add the window listener if it doesn't exist
 		if !@handlers[event].keys[key]?
-			@handlers[event].keys[key] = []
+			@handlers[event].keys[key] = true
 			window.addEventListener event,
 				_.debounce(_.throttle(@fire, options.throttle), options.debounce)
 
