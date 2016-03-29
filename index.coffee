@@ -40,7 +40,7 @@ class WindowEventMediator
 	callback - function
 	###
 	off: (event, callback) =>
-		_.pull @handlers[event].callbacks, callback
+		_.pull @handlers[event].callbacks, callback if @handlers[event]
 
 	###
 	Create an event container for the window event type and
@@ -70,7 +70,7 @@ class WindowEventMediator
 	Fires all events for a given window event type, padding the native event
 	object through to the mediated callback. It must be looped through backwards
 	so that callbacks which are removed during the loop don't break the
-	iteration. 
+	iteration.
 
 	e - Event - native event object
 	###
