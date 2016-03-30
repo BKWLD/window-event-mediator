@@ -38,9 +38,16 @@ class WindowEventMediator
 
 	event - string - event name ('resize', 'scroll', etc)
 	callback - function
+	options - target specific throttled/debounced refrences to remove.
 	###
-	off: (event, callback) =>
-		_.pull @handlers[event].callbacks, callback
+	off: (event, callback, options) =>
+		if options?
+			options = _.merge {}, @defaults, options
+			key = options.throttle+'-'+options.debounce
+			_.remove @handlers[event][key], (cbs) -> return (cbs.original == callback)
+		else
+			_.each @handlers[event], (arr) ->
+				_.remove arr, (cbs) -> return (cbs.original == callback)
 
 	###
 	Create an event container for the window event type and
@@ -54,28 +61,29 @@ class WindowEventMediator
 		# If the event type hasn't been added, create an object to store the
 		# callbacks and a record of which throttle.debounce listeners have been
 		# added
-		if !@handlers[event]?
-			@handlers[event] = {callbacks: [], keys: {}}
+		@handlers[event] = {} if !@handlers[event]?
 
 		# Only add the window listener if it doesn't exist
-		if !@handlers[event].keys[key]?
-			@handlers[event].keys[key] = true
-			window.addEventListener event,
-				_.debounce(_.throttle(@fire, options.throttle), options.debounce)
+		if !@handlers[event].hasOwnProperty(key)
+			@handlers[event][key] = []
+			window.addEventListener event, @fire
 
-		# Save the callback references
-		@handlers[event].callbacks.push callback
+		# Save the callback references, including the original event for removing later
+		@handlers[event][key].push
+			modified: callback
+			original: callback
 
 	###
 	Fires all events for a given window event type, padding the native event
 	object through to the mediated callback. It must be looped through backwards
 	so that callbacks which are removed during the loop don't break the
-	iteration. 
+	iteration.
 
 	e - Event - native event object
 	###
 	fire: (e) =>
-		_.eachRight @handlers[e.type].callbacks, (cb) -> cb(e); true
+		_.forEachRight @handlers[e.type], (bag) ->
+			_.each bag, (cbs) -> cbs.modified(e); return true
 
 # This operates as a singleton
 module.exports = new WindowEventMediator()
