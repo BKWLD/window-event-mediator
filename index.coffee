@@ -41,10 +41,12 @@ class WindowEventMediator
 	options - target specific throttled/debounced refrences to remove.
 	###
 	off: (event, callback, options) =>
+		return if not @handlers[event]?
 		if options?
 			options = _.merge {}, @defaults, options
 			key = options.throttle+'-'+options.debounce
-			_.remove @handlers[event][key], (cbs) -> return (cbs.original == callback)
+			if @handlers[event][key]?
+				_.remove @handlers[event][key], (cbs) -> return (cbs.original == callback)
 		else
 			_.each @handlers[event], (arr) ->
 				_.remove arr, (cbs) -> return (cbs.original == callback)
