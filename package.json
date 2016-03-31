@@ -1,6 +1,6 @@
 {
 	"name": "window-event-mediator",
-	"version": "0.1.0",
+	"version": "0.2.0",
 	"description": "Mediator pattern for window event handling",
 	"main": "index.coffee",
 	"scripts": {
