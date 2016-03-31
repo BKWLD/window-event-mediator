@@ -77,7 +77,7 @@ class WindowEventMediator
 
 		# Save the callback references, including the original event for removing later
 		@handlers[event][key].push
-			modified: _.debounce(_.throttle(callback))
+			modified: _.debounce(_.throttle(callback, options.throttle), options.debounce)
 			original: callback
 
 	###
