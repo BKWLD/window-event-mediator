@@ -90,7 +90,7 @@ class WindowEventMediator
 	###
 	fire: (e) =>
 		_.forEachRight @handlers[e.type], (bag) ->
-			_.each bag, (cbs) -> cbs.modified(e); return true
+			_.forEachRight bag, (cbs) -> cbs.modified(e); return true
 
 # This operates as a singleton
 module.exports = new WindowEventMediator()
