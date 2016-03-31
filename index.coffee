@@ -9,7 +9,6 @@ Example Usage:
 _ = require 'lodash'
 
 class WindowEventMediator
-	constructor: -> return
 
 	# Stores a record on all event listener types, subscribed callbacks, and
 	# Throttle/Debounce option keys
@@ -19,6 +18,9 @@ class WindowEventMediator
 	defaults:
 		throttle: 100
 		debounce: 0
+		dispatcher:
+			scroll: window  # Included as an example of how this can be used
+			default: window
 
 	###
 	Register an event handler with the mediator
@@ -65,10 +67,13 @@ class WindowEventMediator
 		# added
 		@handlers[event] = {} if !@handlers[event]?
 
+		# Determine which dispatcher to listen to
+		dispatcher = options.dispatcher[event] ? options.dispatcher.default
+
 		# Only add the window listener if it doesn't exist
 		if !@handlers[event].hasOwnProperty(key)
 			@handlers[event][key] = []
-			window.addEventListener event, @fire
+			dispatcher.addEventListener event, @fire
 
 		# Save the callback references, including the original event for removing later
 		@handlers[event][key].push
