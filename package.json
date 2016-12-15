@@ -17,6 +17,6 @@
 	},
 	"homepage": "https://github.com/BKWLD/window-event-mediator#readme",
 	"dependencies": {
-		"lodash": "^3"
+		"lodash": "3 - 4"
 	}
 }
