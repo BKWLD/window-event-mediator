@@ -6,8 +6,15 @@ Example Usage:
 	mediator.on 'resize', myCallback
 	mediator.off 'scroll', mycallback
 ###
-_ = require 'lodash'
 
+# Deps
+defaults = require 'lodash/defaults'
+forEachRight = require 'lodash/forEachRight'
+throttle = require 'lodash/throttle'
+debounce = require 'lodash/debounce'
+remove = require 'lodash/remove'
+
+# Class definition
 class WindowEventMediator
 
 	# Stores a record on all event listener types, subscribed callbacks, and
@@ -30,8 +37,8 @@ class WindowEventMediator
 		throttle [100] - int - milliseconds to throttle
 		debounce [100] - int - milliseconds to debounce
 	###
-	on: (event, callback, options) =>
-		options = _.merge {}, @defaults, options
+	on: (event, callback, options = {}) =>
+		options = defaults options, @defaults
 		@set event, callback, options
 
 	###
@@ -42,16 +49,16 @@ class WindowEventMediator
 	callback - function
 	options - target specific throttled/debounced refrences to remove.
 	###
-	off: (event, callback, options) =>
+	off: (event, callback, options = {}) =>
 		return if not @handlers[event]?
 		if options?
-			options = _.merge {}, @defaults, options
+			options = defaults options, @defaults
 			key = options.throttle+'-'+options.debounce
 			if @handlers[event][key]?
-				_.remove @handlers[event][key], (cbs) -> return (cbs.original == callback)
+				remove @handlers[event][key], (cbs) -> cbs.original == callback
 		else
-			_.each @handlers[event], (arr) ->
-				_.remove arr, (cbs) -> return (cbs.original == callback)
+			for arr in @handlers[event]
+				remove arr, (cbs) -> cbs.original == callback
 
 	###
 	Create an event container for the window event type and
@@ -60,7 +67,7 @@ class WindowEventMediator
 	event - string - event name ('resize', 'scroll', etc)
 	###
 	set: (event, callback, options) =>
-		key = options.throttle+'-'+options.debounce
+		key = options.throttle + '-' + options.debounce
 
 		# If the event type hasn't been added, create an object to store the
 		# callbacks and a record of which throttle.debounce listeners have been
@@ -77,7 +84,7 @@ class WindowEventMediator
 
 		# Save the callback references, including the original event for removing later
 		@handlers[event][key].push
-			modified: _.debounce(_.throttle(callback, options.throttle), options.debounce)
+			modified: debounce(throttle(callback, options.throttle), options.debounce)
 			original: callback
 
 	###
@@ -89,8 +96,8 @@ class WindowEventMediator
 	e - Event - native event object
 	###
 	fire: (e) =>
-		_.forEachRight @handlers[e.type], (bag) ->
-			_.forEachRight bag, (cbs) -> cbs.modified(e); return true
+		forEachRight @handlers[e.type], (bag) ->
+			forEachRight bag, (cbs) -> cbs.modified(e); return true
 
 # This operates as a singleton
 module.exports = new WindowEventMediator()
