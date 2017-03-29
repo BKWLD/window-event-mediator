@@ -56,9 +56,11 @@ class WindowEventMediator
 			key = options.throttle+'-'+options.debounce
 			if @handlers[event][key]?
 				remove @handlers[event][key], (cbs) -> cbs.original == callback
+				delete @handlers[event][key] if @handlers[event][key].length == 0
 		else
 			for key of @handlers[event]
 				remove @handlers[event][key], (cbs) -> cbs.original == callback
+				delete @handlers[event][key] if @handlers[event][key].length == 0
 
 	###
 	Create an event container for the window event type and
