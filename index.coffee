@@ -57,8 +57,8 @@ class WindowEventMediator
 			if @handlers[event][key]?
 				remove @handlers[event][key], (cbs) -> cbs.original == callback
 		else
-			for arr in @handlers[event]
-				remove arr, (cbs) -> cbs.original == callback
+			for key of @handlers[event]
+				remove @handlers[event][key], (cbs) -> cbs.original == callback
 
 	###
 	Create an event container for the window event type and
