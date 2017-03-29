@@ -8,11 +8,11 @@ Example Usage:
 ###
 
 # Deps
-defaults = require 'lodash/defaults'
 forEachRight = require 'lodash/forEachRight'
 throttle = require 'lodash/throttle'
 debounce = require 'lodash/debounce'
 remove = require 'lodash/remove'
+merge = require 'lodash/merge'
 
 # Class definition
 class WindowEventMediator
@@ -37,8 +37,8 @@ class WindowEventMediator
 		throttle [100] - int - milliseconds to throttle
 		debounce [100] - int - milliseconds to debounce
 	###
-	on: (event, callback, options = {}) =>
-		options = defaults options, @defaults
+	on: (event, callback, options) =>
+		options = merge {}, @defaults, options
 		@set event, callback, options
 
 	###
@@ -49,10 +49,10 @@ class WindowEventMediator
 	callback - function
 	options - target specific throttled/debounced refrences to remove.
 	###
-	off: (event, callback, options = {}) =>
+	off: (event, callback, options) =>
 		return if not @handlers[event]?
 		if options?
-			options = defaults options, @defaults
+			options = merge {}, @defaults, options
 			key = options.throttle+'-'+options.debounce
 			if @handlers[event][key]?
 				remove @handlers[event][key], (cbs) -> cbs.original == callback
