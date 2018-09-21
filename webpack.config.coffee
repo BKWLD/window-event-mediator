@@ -1,3 +1,4 @@
+nodeExternals = require 'webpack-node-externals'
 module.exports =
 
 	entry:
@@ -13,4 +14,4 @@ module.exports =
 		filename: if '-p' in process.argv then '[name].min.js' else '[name].js'
 
 	# Every non-relative module is external
-	externals: /lodash/
+	externals: [nodeExternals()]
