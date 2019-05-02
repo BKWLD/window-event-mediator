@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "node_modules/.bin/webpack && node_modules/.bin/webpack -p",
+    "build": "coffee -ct index.coffee",
     "version": "npm run build && git add -A",
     "postversion": "git push --follow-tags"
   },
@@ -13,19 +13,18 @@
     "type": "git",
     "url": "git+https://github.com/BKWLD/window-event-mediator.git"
   },
-  "author": "info@bkwld.com",
+  "author": "info@bukwild.com",
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/BKWLD/window-event-mediator/issues"
   },
   "homepage": "https://github.com/BKWLD/window-event-mediator#readme",
   "dependencies": {
-    "lodash": "3 - 4"
+    "lodash": ">=4.17.11"
   },
   "devDependencies": {
-    "coffee-loader": "^0.7.2",
-    "coffee-script": "^1.11.1",
-    "webpack": "^1.13.3",
-    "webpack-node-externals": "^1.7.2"
+    "babel-core": "^6.26.3",
+    "babel-preset-env": "^1.6.1",
+    "coffeescript": "^2.3.0"
   }
 }

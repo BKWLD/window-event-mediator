@@ -8,11 +8,11 @@ Example Usage:
 ###
 
 # Deps
-forEachRight = require 'lodash/forEachRight'
-throttle = require 'lodash/throttle'
-debounce = require 'lodash/debounce'
-remove = require 'lodash/remove'
-merge = require 'lodash/merge'
+import forEachRight from 'lodash/forEachRight'
+import throttle from 'lodash/throttle'
+import debounce from 'lodash/debounce'
+import remove from 'lodash/remove'
+import merge from 'lodash/merge'
 
 # Class definition
 class WindowEventMediator
@@ -102,4 +102,4 @@ class WindowEventMediator
 			forEachRight bag, (cbs) -> cbs.modified(e); return true
 
 # This operates as a singleton
-module.exports = new WindowEventMediator()
+export default new WindowEventMediator()
